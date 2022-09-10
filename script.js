@@ -60,33 +60,65 @@ const renderCountry = function (data, className = '') {
   countriesContainer.style.opacity = 1;
 };
 
-const getCountryDataAndNeighbour = function (country) {
-  //AJAX call country 1
-  const request = new XMLHttpRequest();
-  request.open('Get', `https://restcountries.com/v3.1/name/${country}`);
-  request.send();
-  request.addEventListener('load', function () {
-    const [data] = JSON.parse(this.responseText);
-    console.log(data);
-    console.log(Object.values(data.currencies)[0].name);
+// const getCountryDataAndNeighbour = function (country) {
+//   //AJAX call country 1
+//   const request = new XMLHttpRequest();
+//   request.open('Get', `https://restcountries.com/v3.1/name/${country}`);
+//   request.send();
+//   request.addEventListener('load', function () {
+//     const [data] = JSON.parse(this.responseText);
+//     console.log(data);
+//     console.log(Object.values(data.currencies)[0].name);
 
-    //render Country 1
-    renderCountry(data);
-    // Get neighbout country 2
-    const neighbout = data.borders[0];
-    console.log(neighbout);
-    const request2 = new XMLHttpRequest();
-    request2.open('Get', `https://restcountries.com/v3.1/alpha/${neighbout}`);
-    request2.send();
-    request2.addEventListener('load', function () {
-      const [data2] = JSON.parse(this.responseText);
-      console.log(data2);
-      renderCountry(data2, 'neighbour');
-    });
-  });
-};
+//     //render Country 1
+//     renderCountry(data);
+//     // Get neighbout country 2
+//     const neighbout = data.borders[0];
+//     console.log(neighbout);
+//     const request2 = new XMLHttpRequest();
+//     request2.open('Get', `https://restcountries.com/v3.1/alpha/${neighbout}`);
+//     request2.send();
+//     request2.addEventListener('load', function () {
+//       const [data2] = JSON.parse(this.responseText);
+//       console.log(data2);
+//       renderCountry(data2, 'neighbour');
+//     });
+//   });
+// };
 
-getCountryDataAndNeighbour('portugal');
+// getCountryDataAndNeighbour('portugal');
 // getCountryDataAndNeighbour('nepal');
 
 // https://restcountries.com/v2/
+
+// const request = fetch('https://restcountries.com/v3.1/name/portugal');
+// console.log(request);
+
+// const getCountryData = function (country) {
+//   fetch(`https://restcountries.com/v3.1/name/${country}`)
+//     .then(function (response) {
+//       //   console.log(response);
+//       return response.json();
+//     })
+//     .then(function (data) {
+//       console.log(data);
+//       renderCountry(data[0]);
+//     });
+// };
+
+const getCountryData = function (country) {
+  fetch(`https://restcountries.com/v3.1/name/${country}`)
+    .then(response => response.json())
+    .then(data => {
+      renderCountry(data[0]);
+      const neighbour = data[0].borders?.[0];
+      console.log(data);
+
+      if (!neighbour) return;
+      return fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`);
+    })
+    .then(response => response.json())
+    .then(data => renderCountry(data[0], 'neighbour'));
+};
+
+getCountryData('portugal');
