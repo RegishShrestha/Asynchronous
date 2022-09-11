@@ -57,7 +57,7 @@ const renderCountry = function (data, className = '') {
         </div>
     </article>`;
   countriesContainer.insertAdjacentHTML('beforeend', html);
-  countriesContainer.style.opacity = 1;
+  // countriesContainer.style.opacity = 1;
 };
 
 // const getCountryDataAndNeighbour = function (country) {
@@ -106,19 +106,69 @@ const renderCountry = function (data, className = '') {
 //     });
 // };
 
+const renderError = function (msg) {
+  countriesContainer.insertAdjacentText('beforeend', msg);
+  // countriesContainer.style.opacity = 1;
+};
+
+const getJSON = function (url, message = 'Some thing is wrong') {
+  fetch(url).then(response => {
+    if (!response.ok) {
+      throw new Error(`Country name not found${response.status}`);
+    }
+    return response.json();
+  });
+};
+
+// const getCountryData = function (country) {
+//   fetch(`https://restcountries.com/v3.1/name/${country}`)
+//     .then(response => {
+//       console.log(response);
+//       if (!response.ok) {
+//         throw new Error(`Country name not found${response.status}`);
+//       }
+//       return response.json();
+//     })
+//     .then(data => {
+//       renderCountry(data[0]);
+//       const neighbour = data[0].borders?.[0];
+//       console.log(data);
+
+//       if (!neighbour) return;
+//       return fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`);
+//     })
+//     .then(response => response.json())
+//     .then(data => renderCountry(data[0], 'neighbour'))
+//     .catch(err => {
+//       console.error(`${err}:(:(:(`);
+//       renderError(`Something went wrong ${err.message}`);
+//     })
+//     .finally(() => (countriesContainer.style.opacity = 1));
+// };
+
 const getCountryData = function (country) {
-  fetch(`https://restcountries.com/v3.1/name/${country}`)
-    .then(response => response.json())
+  getJSON(`https://restcountries.com/v3.1/name/${country}`, 'Country not found')
     .then(data => {
       renderCountry(data[0]);
       const neighbour = data[0].borders?.[0];
       console.log(data);
 
-      if (!neighbour) return;
+      if (!neighbour) throw new Error('NO nneighbour found');
       return fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`);
     })
     .then(response => response.json())
-    .then(data => renderCountry(data[0], 'neighbour'));
+    .then(data => renderCountry(data[0], 'neighbour'))
+    .catch(err => {
+      console.error(`${err}:(:(:(`);
+      renderError(`Something went wrong ${err.message}`);
+    })
+    .finally(() => (countriesContainer.style.opacity = 1));
 };
 
-getCountryData('portugal');
+btn.addEventListener('click', function () {
+  getCountryData('portugal');
+});
+
+getCountryData('fdfdfdf');
+
+// I have 2 reasons for wanting to participate as a Mentee . The first is that I think this program will help me to increase my self awareness and communication skills and also help me to grow as a person, student. Being envloved in this program will help in growing of personal network within business aswell. The second is that I truly believe I have something to contribute: by being there, I can bring unique insight, perspective, and a positive, collaborative attitude.
