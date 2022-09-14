@@ -57,7 +57,7 @@ const renderCountry = function (data, className = '') {
         </div>
     </article>`;
   countriesContainer.insertAdjacentHTML('beforeend', html);
-  // countriesContainer.style.opacity = 1;
+  countriesContainer.style.opacity = 1;
 };
 
 // // const getCountryDataAndNeighbour = function (country) {
@@ -240,11 +240,27 @@ const getCountryData = function (country) {
 
 const whereAmI = function (lat, lng) {
   fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`problem with geo coding ${response.status}`);
+      }
+      return response.json();
+    })
     .then(data => {
       console.log(data);
-      getCountryData(data['country']);
+      return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
     })
+    .then(response => {
+      console.log(response);
+      if (!response.ok) {
+        throw new Error(`Country name not found${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      renderCountry(data[0]);
+    })
+
     .catch(err => console.log(err));
 };
 whereAmI(19.037, 72.873);
