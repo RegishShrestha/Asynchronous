@@ -38,27 +38,27 @@
 // // // genCountryData('portugal');
 // // // genCountryData('usa');
 // // // genCountryData('germany');
-// const renderCountry = function (data, className = '') {
-//   const html = `
-//     <article class="country ${className}">
-//         <img class="country__img" src="${data.flags.png}" />
-//         <div class="country__data">
-//             <h3 class="country__name">${data.name.official}</h3>
-//             <h4 class="country__region">${data.region}</h4>
-//             <p class="country__row"><span>👫</span>${(
-//               +data.population / 1000000
-//             ).toFixed(1)} people</p>
-//             <p class="country__row"><span>🗣️</span>${
-//               Object.values(data.languages)[0]
-//             }</p>
-//             <p class="country__row"><span>💰</span>${
-//               Object.values(data.currencies)[0].name
-//             }</p>
-//         </div>
-//     </article>`;
-//   countriesContainer.insertAdjacentHTML('beforeend', html);
-//   countriesContainer.style.opacity = 1;
-// };
+const renderCountry = function (data, className = '') {
+  const html = `
+    <article class="country ${className}">
+        <img class="country__img" src="${data.flags.png}" />
+        <div class="country__data">
+            <h3 class="country__name">${data.name.official}</h3>
+            <h4 class="country__region">${data.region}</h4>
+            <p class="country__row"><span>👫</span>${(
+              +data.population / 1000000
+            ).toFixed(1)} people</p>
+            <p class="country__row"><span>🗣️</span>${
+              Object.values(data.languages)[0]
+            }</p>
+            <p class="country__row"><span>💰</span>${
+              Object.values(data.currencies)[0].name
+            }</p>
+        </div>
+    </article>`;
+  countriesContainer.insertAdjacentHTML('beforeend', html);
+  countriesContainer.style.opacity = 1;
+};
 
 // // // const getCountryDataAndNeighbour = function (country) {
 // // //   //AJAX call country 1
@@ -266,17 +266,60 @@
 // whereAmI(19.037, 72.873);
 // // whereAmI(52.508, 13.381);
 
-console.log('time iin');
+// console.log('time iin');
 
-setTimeout(function () {
-  console.log('timer got');
-}, 0);
+// setTimeout(function () {
+//   console.log('timer got');
+// }, 0);
 
-Promise.resolve('Promise 1').then(res => console.log(res));
+// Promise.resolve('Promise 1').then(res => console.log(res));
 
-Promise.resolve('Promise 2').then(res => {
-  for (let i = 0; i <= 1000000000; i++) {}
-  console.log(res);
-});
+// Promise.resolve('Promise 2').then(res => {
+//   for (let i = 0; i <= 1000000000; i++) {}
+//   console.log(res);
+// });
 
-console.log('time out');
+// console.log('time out');
+
+// const luckyDrawal = new Promise(function (resolve, reject) {
+//   setTimeout(function () {
+//     if (Math.random() >= 0.5) {
+//       resolve('You are lucky guy');
+//     } else {
+//       reject('Yup your money is gone ');
+//     }
+//   }, 2000);
+// });
+
+// luckyDrawal.then(res => console.log(res)).catch(err => console.log(err));
+
+// const wait = function (second) {
+//   return new Promise(function (resolve) {
+//     setTimeout(resolve, second);
+//   });
+// };
+
+// wait(2)
+//   .then(() => {
+//     console.log('I waited 2 seconds');
+//     return wait(1);
+//   })
+//   .then(() => console.log('I wated 1 sec'));
+
+// navigator.geolocation.getCurrentPosition(
+//   position => console.log(position),
+//   er => console.log(er)
+// );
+
+// const getPosition = function () {
+//   return new Promise();
+// };
+
+const whereAmI = async function (country) {
+  const res = await fetch(`https://restcountries.com/v3.1/name/${country}`);
+  const data = await res.json();
+  console.log(data);
+  renderCountry(data[0]);
+};
+
+whereAmI('Portugal');
