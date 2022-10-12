@@ -154,44 +154,77 @@ image path. Set the network speed to “Fast 3G” in the dev tools Network tab,
 otherwise images load too fast
 GOOD LUCK 😀*/
 
-const wait = function (second) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, second * 1000);
-  });
+// const wait = function (second) {
+//   return new Promise(function (resolve) {
+//     setTimeout(resolve, second * 1000);
+//   });
+// };
+
+// const imgContainer = document.querySelector('.images');
+
+// const createImage = function (imgPath) {
+//   return new Promise(function (resolve, reject) {
+//     const img = document.createElement('img');
+//     img.src = imgPath;
+//     img.addEventListener('load', function () {
+//       imgContainer.append(img);
+//       resolve(img);
+//     });
+//     img.addEventListener('error', function () {
+//       reject(new Error('Image not found'));
+//     });
+//   });
+// };
+
+// let currentImg;
+// createImage('img/img-1.jpg')
+//   .then(img => {
+//     console.log('Image1 loaded');
+//     currentImg = img;
+//     return wait(2);
+//   })
+//   .then(() => {
+//     currentImg.style.display = 'none';
+//     return createImage('img/img-2.jpg');
+//   })
+//   .then(img => {
+//     console.log('Image2 loaded');
+//     currentImg = img;
+//     return wait(2);
+//   })
+//   .then(() => {
+//     currentImg.style.display = 'none';
+//   });
+
+const whereAmI = async function (country) {
+  try {
+    const res = await fetch(`https://restcountries.com/v3.1/name/${country}`);
+    const data = await res.json();
+    //   console.log(data[0].flag);
+    return `${data[0].flag} is a country`;
+  } catch (err) {
+    throw err;
+  }
 };
+// whereAmI('nepal');
+console.log('hell');
+// whereAmI('nepal')
+//   .then(res => console.log(res))
+//   .catch(err => console.log(err));
+console.log('0');
 
-const imgContainer = document.querySelector('.images');
-
-const createImage = function (imgPath) {
-  return new Promise(function (resolve, reject) {
-    const img = document.createElement('img');
-    img.src = imgPath;
-    img.addEventListener('load', function () {
-      imgContainer.append(img);
-      resolve(img);
-    });
-    img.addEventListener('error', function () {
-      reject(new Error('Image not found'));
-    });
-  });
-};
-
-let currentImg;
-createImage('img/img-1.jpg')
-  .then(img => {
-    console.log('Image1 loaded');
-    currentImg = img;
-    return wait(2);
-  })
-  .then(() => {
-    currentImg.style.display = 'none';
-    return createImage('img/img-2.jpg');
-  })
-  .then(img => {
-    console.log('Image2 loaded');
-    currentImg = img;
-    return wait(2);
-  })
-  .then(() => {
-    currentImg.style.display = 'none';
-  });
+(async function () {
+  try {
+    const res = await whereAmI('nepal');
+    console.log(res);
+  } catch (err) {
+    console.log(err);
+  }
+})();
+// try {
+//   let x = 1;
+//   const y = 2;
+//   y = 3;
+// } catch (err) {
+//   alert(err.message);
+// }
